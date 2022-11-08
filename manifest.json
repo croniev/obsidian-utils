@@ -1,7 +1,7 @@
 {
 	"id": "timelines-parse-dates",
 	"name": "Date Parsing for Timelines",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"minAppVersion": "0.12.0",
 	"description": "This is to add the Geburtsdatum and Tod tags to a document which has an obsidian-timelines span element.",
 	"author": "Croniev",
