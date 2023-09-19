@@ -8,109 +8,102 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+	for (var name in all)
+	__defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
+	if (from && typeof from === "object" || typeof from === "function") {
+		for (let key of __getOwnPropNames(from))
+		if (!__hasOwnProp.call(to, key) && key !== except)
+		__defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+	}
+	return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
+	return new Promise((resolve, reject) => {
+		var fulfilled = (value) => {
+			try {
+				step(generator.next(value));
+			} catch (e) {
+				reject(e);
+			}
+		};
+		var rejected = (value) => {
+			try {
+				step(generator.throw(value));
+			} catch (e) {
+				reject(e);
+			}
+		};
+		var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+		step((generator = generator.apply(__this, __arguments)).next());
+	});
 };
 
 // main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => TimelinesParseDates
+	default: () => TimelinesParseDates
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian = require("obsidian");
 var obsidian = require("obsidian");
 var TimelinesParseDates = class extends import_obsidian.Plugin {
-  constructor() {
-    super(...arguments);
-  }
-  onload() {
-    return __async(this, null, function* () {
-      console.log("Loading plugin TimelinesParseDates...");
-      this.addCommand({
-        id: "parse-dates",
-        name: "Parse Dates",
-        callback: () => {
-          this.parseDates();
-        },
-        hotkeys: [
-          {
-            modifiers: ["Alt"],
-            key: "D"
-          }
-        ]
-      });
-      TimelinesParseDates.prototype.getEditor = function() {
-        var view = this.app.workspace.getActiveViewOfType(obsidian.MarkdownView);
-        if (!view || view.getMode() !== "source") {
-          return null;
-        }
-        return view.sourceMode.cmEditor;
-      };
-    });
-  }
-  onunload() {
-    return __async(this, null, function* () {
-      console.log("Unloading plugin TimelinesParseDates...");
-    });
-  }
-  parseDates() {
-    return __async(this, null, function* () {
-      var editor = this.getEditor();
-      if (editor == null || !editor.somethingSelected()) {
-        return;
-      }
-      var selectedText = editor.getSelection();
-      var d1 = selectedText.slice(38, 51);
-      var d2 = selectedText.slice(63, 76);
-      var type = selectedText.slice(selectedText.lastIndexOf("='") + 2, selectedText.length - 9);
-      if (d1.slice(11, 13) == "00") {
-        d1 = d1.slice(0, 4);
-      } else {
-        d1 = d1.slice(0, 10);
-      }
-      if (d2.slice(11, 13) == "00") {
-        d2 = d2.slice(0, 4);
-      } else {
-        d2 = d2.slice(0, 10);
-      }
-      if (type.slice(0, 6) == "person") {
-        var newString = "\nGeburtsdatum:: " + d1 + "\n\nTod:: " + d2 + "\n</span>";
-      } else if (type.slice(0, 6) == "geschi" || type == "periode") {
-        newString = "\nStart:: " + d1 + "\n\nEnde:: " + d2 + "\n</span>";
-      }
-      selectedText = selectedText.replace("</span>", newString);
-      editor.replaceSelection(selectedText, "around");
-    });
-  }
+	constructor() {
+		super(...arguments);
+	}
+	onload() {
+		return __async(this, null, function* () {
+			console.log("Loading plugin TimelinesParseDates...");
+			this.addCommand({
+				id: "parse-dates",
+				name: "Parse Dates",
+				callback: () => {
+					this.parseDates();
+				},
+				hotkeys: [
+					{
+						modifiers: ["Alt"],
+						key: "D"
+					}
+				]
+			});
+			TimelinesParseDates.prototype.getEditor = function() {
+				var view = this.app.workspace.getActiveViewOfType(obsidian.MarkdownView);
+				if (!view || view.getMode() !== "source") {
+					return null;
+				}
+				return view.sourceMode.cmEditor;
+			};
+		});
+	}
+	onunload() {
+		return __async(this, null, function* () {
+			console.log("Unloading plugin TimelinesParseDates...");
+		});
+	}
+	parseDates() {
+		return __async(this, null, function* () {
+			var editor = this.getEditor();
+			if (editor == null || !editor.somethingSelected()) {
+				return;
+			}
+			var selectedText = editor.getSelection();
+			// if (selectedText.slice(0,1) == "\n"){
+			// 	selectedText = selectedText.slice(1,selectedText.length - 1);
+			// }
+			var d1 = selectedText.match(/data-date='.{1,4}-/)[0].slice(11, -1)
+			var d2 = selectedText.match(/data-end='.{1,4}-/)[0].slice(10, -1)
+			var type = selectedText.match(/data-class='.*'/)[0].slice(12, -1)
+			if (type == "person1") {
+				var newString = "\nGeburtsdatum:: " + d1 + "\n\nTod:: " + d2 + "\n</span>";
+			} else if (type == "geschi" || type == "periode") {
+				newString = "\nStart:: " + d1 + "\n\nEnde:: " + d2 + "\n</span>";
+			}
+			selectedText = selectedText.replace("</span>", newString);
+			editor.replaceSelection(selectedText, "around");
+		});
+	}
 };
 //# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsibWFpbi50cyJdLAogICJzb3VyY2VzQ29udGVudCI6IFsiaW1wb3J0IHsgQXBwLCBFZGl0b3IsIE1hcmtkb3duVmlldywgTW9kYWwsIE5vdGljZSwgUGx1Z2luLCBQbHVnaW5TZXR0aW5nVGFiLCBTZXR0aW5nIH0gZnJvbSAnb2JzaWRpYW4nO1xudmFyIG9ic2lkaWFuID0gcmVxdWlyZSgnb2JzaWRpYW4nKTtcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIFRpbWVsaW5lc1BhcnNlRGF0ZXMgZXh0ZW5kcyBQbHVnaW4ge1xuXHRjb25zdHJ1Y3Rvcigpe1xuXHRcdHN1cGVyKC4uLmFyZ3VtZW50cyk7XG5cdFx0Ly8gY29uc3QgcG90c19uYW1lcyA9IFtcIkJlc29yZ3VuZ1wiLFwiRWlua2F1ZlwiLFwiRnJlaVwiLFwiR2VsZFwiLFwiSW50YWtlXCIsXCJTb25zdGlnZXNcIixcIldpZWRlcmhvbHVuZ1wiXVxuXHR9XG5cblx0YXN5bmMgb25sb2FkKCkge1xuXHQgIGNvbnNvbGUubG9nKCdMb2FkaW5nIHBsdWdpbiBUaW1lbGluZXNQYXJzZURhdGVzLi4uJyk7XG5cblx0XHQvLyBUaGlzIGFkZHMgYW4gZWRpdG9yIGNvbW1hbmQgdGhhdCBjYW4gcGVyZm9ybSBzb21lIG9wZXJhdGlvbiBvbiB0aGUgY3VycmVudCBlZGl0b3IgaW5zdGFuY2Vcblx0XHR0aGlzLmFkZENvbW1hbmQoe1xuXHRcdFx0aWQ6ICdwYXJzZS1kYXRlcycsXG5cdFx0XHRuYW1lOiAnUGFyc2UgRGF0ZXMnLFxuXHRcdFx0Y2FsbGJhY2s6ICgpID0+IHtcblx0XHRcdFx0dGhpcy5wYXJzZURhdGVzKCk7XG5cdFx0XHR9LFxuXHRcdFx0aG90a2V5czogW1xuXHRcdFx0XHRcdHtcblx0XHRcdFx0XHRcdFx0bW9kaWZpZXJzOiBbJ0FsdCddLFxuXHRcdFx0XHRcdFx0XHRrZXk6ICdEJyxcblx0XHRcdFx0XHR9LFxuXHRcdFx0XVxuXHRcdH0pO1xuXG4gICAgVGltZWxpbmVzUGFyc2VEYXRlcy5wcm90b3R5cGUuZ2V0RWRpdG9yID0gZnVuY3Rpb24gKCkge1xuICAgICAgICB2YXIgdmlldyA9IHRoaXMuYXBwLndvcmtzcGFjZS5nZXRBY3RpdmVWaWV3T2ZUeXBlKG9ic2lkaWFuLk1hcmtkb3duVmlldyk7XG4gICAgICAgIGlmICghdmlldyB8fCB2aWV3LmdldE1vZGUoKSAhPT0gJ3NvdXJjZScpIHtcbiAgICAgICAgICAgIHJldHVybiBudWxsO1xuICAgICAgICB9XG4gICAgICAgIHJldHVybiB2aWV3LnNvdXJjZU1vZGUuY21FZGl0b3I7XG4gICAgfTtcblx0fVxuXG5cdGFzeW5jIG9udW5sb2FkKCkge1xuICAgICAgICBjb25zb2xlLmxvZygnVW5sb2FkaW5nIHBsdWdpbiBUaW1lbGluZXNQYXJzZURhdGVzLi4uJyk7XG5cdH1cblxuXHRhc3luYyBwYXJzZURhdGVzKCl7XG5cdFx0Ly8gR2V0IHNwYW4gYmxvY2tcblx0XHR2YXIgZWRpdG9yID0gdGhpcy5nZXRFZGl0b3IoKTtcblx0XHRpZiAoZWRpdG9yID09IG51bGwgfHwgIWVkaXRvci5zb21ldGhpbmdTZWxlY3RlZCgpKSB7XG5cdFx0XHRcdHJldHVybjtcblx0XHR9XG5cdFx0dmFyIHNlbGVjdGVkVGV4dCA9IGVkaXRvci5nZXRTZWxlY3Rpb24oKTtcblxuXHRcdC8vIGV4dHJhY3QgZGF0ZXMgYW5kIHR5cGVcblx0XHR2YXIgZDEgPSBzZWxlY3RlZFRleHQuc2xpY2UoMzgsNTEpO1xuXHRcdHZhciBkMiA9IHNlbGVjdGVkVGV4dC5zbGljZSg2Myw3Nik7XG5cdFx0dmFyIHR5cGUgPSBzZWxlY3RlZFRleHQuc2xpY2Uoc2VsZWN0ZWRUZXh0Lmxhc3RJbmRleE9mKFwiPSdcIikrMixzZWxlY3RlZFRleHQubGVuZ3RoLTkpXG5cblx0XHQvLyBVbnRlcnNjaGVpZGUgencuIHh4eHgteHgteHggdW5kIHh4eHhcblx0XHRpZiAoZDEuc2xpY2UoMTEsMTMpID09IFwiMDBcIikge1xuXHRcdFx0ZDEgPSBkMS5zbGljZSgwLDQpO1xuXHRcdH0gZWxzZSB7XG5cdFx0XHRkMSA9IGQxLnNsaWNlKDAsMTApO1xuXHRcdH1cblx0XHRpZiAoZDIuc2xpY2UoMTEsMTMpID09IFwiMDBcIikge1xuXHRcdFx0ZDIgPSBkMi5zbGljZSgwLDQpO1xuXHRcdH0gZWxzZSB7XG5cdFx0XHRkMiA9IGQyLnNsaWNlKDAsMTApO1xuXHRcdH1cblxuXHRcdC8vIFRyZW5uZSBnZXNjaGksIHBlcnNvblxuXHRcdGlmICh0eXBlLnNsaWNlKDAsNikgPT0gXCJwZXJzb25cIikge1xuXHRcdFx0dmFyIG5ld1N0cmluZyA9ICdcXG5HZWJ1cnRzZGF0dW06OiAnK2QxKydcXG5cXG5Ub2Q6OiAnK2QyKydcXG48L3NwYW4+J1xuXHRcdH0gZWxzZSBpZiAodHlwZS5zbGljZSgwLDYpID09IFwiZ2VzY2hpXCIgfHwgdHlwZSA9PSBcInBlcmlvZGVcIikge1xuXHRcdFx0bmV3U3RyaW5nID0gJ1xcblN0YXJ0OjogJytkMSsnXFxuXFxuRW5kZTo6ICcrZDIrJ1xcbjwvc3Bhbj4nXG5cdFx0fVxuXG5cdFx0Ly8gRlx1MDBGQ2dlIGRlbiBlbnRzcHJlY2hlbmRlbiBUZXh0IGFucyBFbmRlIGFuLlxuXHRcdHNlbGVjdGVkVGV4dCA9IHNlbGVjdGVkVGV4dC5yZXBsYWNlKCc8L3NwYW4+JyxuZXdTdHJpbmcpXG5cblx0XHQvLyBBZGQgZGF0ZXMgYXQgcmlnaHQgbG9jYXRpb25cblx0XHRlZGl0b3IucmVwbGFjZVNlbGVjdGlvbihzZWxlY3RlZFRleHQsICdhcm91bmQnKTtcblx0fVxufVxuIl0sCiAgIm1hcHBpbmdzIjogIjs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsc0JBQTRGO0FBQzVGLElBQUksV0FBVyxRQUFRO0FBQ3ZCLElBQXFCLHNCQUFyQixjQUFpRCx1QkFBTztBQUFBLEVBQ3ZELGNBQWE7QUFDWixVQUFNLEdBQUcsU0FBUztBQUFBLEVBRW5CO0FBQUEsRUFFQSxBQUFNLFNBQVM7QUFBQTtBQUNiLGNBQVEsSUFBSSx1Q0FBdUM7QUFHcEQsV0FBSyxXQUFXO0FBQUEsUUFDZixJQUFJO0FBQUEsUUFDSixNQUFNO0FBQUEsUUFDTixVQUFVLE1BQU07QUFDZixlQUFLLFdBQVc7QUFBQSxRQUNqQjtBQUFBLFFBQ0EsU0FBUztBQUFBLFVBQ1A7QUFBQSxZQUNFLFdBQVcsQ0FBQyxLQUFLO0FBQUEsWUFDakIsS0FBSztBQUFBLFVBQ1A7QUFBQSxRQUNGO0FBQUEsTUFDRCxDQUFDO0FBRUMsMEJBQW9CLFVBQVUsWUFBWSxXQUFZO0FBQ2xELFlBQUksT0FBTyxLQUFLLElBQUksVUFBVSxvQkFBb0IsU0FBUyxZQUFZO0FBQ3ZFLFlBQUksQ0FBQyxRQUFRLEtBQUssUUFBUSxNQUFNLFVBQVU7QUFDdEMsaUJBQU87QUFBQSxRQUNYO0FBQ0EsZUFBTyxLQUFLLFdBQVc7QUFBQSxNQUMzQjtBQUFBLElBQ0g7QUFBQTtBQUFBLEVBRUEsQUFBTSxXQUFXO0FBQUE7QUFDVixjQUFRLElBQUkseUNBQXlDO0FBQUEsSUFDNUQ7QUFBQTtBQUFBLEVBRUEsQUFBTSxhQUFZO0FBQUE7QUFFakIsVUFBSSxTQUFTLEtBQUssVUFBVTtBQUM1QixVQUFJLFVBQVUsUUFBUSxDQUFDLE9BQU8sa0JBQWtCLEdBQUc7QUFDakQ7QUFBQSxNQUNGO0FBQ0EsVUFBSSxlQUFlLE9BQU8sYUFBYTtBQUd2QyxVQUFJLEtBQUssYUFBYSxNQUFNLElBQUcsRUFBRTtBQUNqQyxVQUFJLEtBQUssYUFBYSxNQUFNLElBQUcsRUFBRTtBQUNqQyxVQUFJLE9BQU8sYUFBYSxNQUFNLGFBQWEsWUFBWSxJQUFJLElBQUUsR0FBRSxhQUFhLFNBQU8sQ0FBQztBQUdwRixVQUFJLEdBQUcsTUFBTSxJQUFHLEVBQUUsS0FBSyxNQUFNO0FBQzVCLGFBQUssR0FBRyxNQUFNLEdBQUUsQ0FBQztBQUFBLE1BQ2xCLE9BQU87QUFDTixhQUFLLEdBQUcsTUFBTSxHQUFFLEVBQUU7QUFBQSxNQUNuQjtBQUNBLFVBQUksR0FBRyxNQUFNLElBQUcsRUFBRSxLQUFLLE1BQU07QUFDNUIsYUFBSyxHQUFHLE1BQU0sR0FBRSxDQUFDO0FBQUEsTUFDbEIsT0FBTztBQUNOLGFBQUssR0FBRyxNQUFNLEdBQUUsRUFBRTtBQUFBLE1BQ25CO0FBR0EsVUFBSSxLQUFLLE1BQU0sR0FBRSxDQUFDLEtBQUssVUFBVTtBQUNoQyxZQUFJLFlBQVksc0JBQW9CLEtBQUcsZUFBYSxLQUFHO0FBQUEsTUFDeEQsV0FBVyxLQUFLLE1BQU0sR0FBRSxDQUFDLEtBQUssWUFBWSxRQUFRLFdBQVc7QUFDNUQsb0JBQVksZUFBYSxLQUFHLGdCQUFjLEtBQUc7QUFBQSxNQUM5QztBQUdBLHFCQUFlLGFBQWEsUUFBUSxXQUFVLFNBQVM7QUFHdkQsYUFBTyxpQkFBaUIsY0FBYyxRQUFRO0FBQUEsSUFDL0M7QUFBQTtBQUNEOyIsCiAgIm5hbWVzIjogW10KfQo=
