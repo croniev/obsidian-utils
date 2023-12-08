@@ -4,7 +4,7 @@ Not sure why anyone else would have use for this.
 Command: Parse Dates
 
 ## Usage
-When you have an object like `<span class='ob-timelines' data-date='xxxx-01-01-00' data-end='xxxx-01-01-00' data-type='range' data-class='geschi1'></span>`, make a selection that contains the entire span and execute the command.
+When you have an object like `<span class='ob-timelines' data-date='xxxx-01-01-00' data-end='xxxx-01-01-00' data-type='range' data-class='geschi1'></span>` execute the command.
 This will add two metadata lines in between `>` and `</span>`, the sort of `Start:: xxxx` and `Ende:: xxxx`.
 ### Variations
 If the data class starts with `person` the added lines will say `Geburtsdatum:: ` and `Tod:: `.
