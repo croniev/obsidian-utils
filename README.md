@@ -1,9 +1,9 @@
 # obsidian-utils
 This is a more or less specifically tailored plugin for functions that I find to be useful in obsidian. There are multiple functionalities:  
-- **Parse Dates**
-- **Number References**
+- [ **Parse Dates** ]{#parse-dates}
+- [ **Number References** ]{#numb-ref}
 
-## Parse Dates
+## Parse Dates<a name="parse-dates"></a>
 This command helps create inline metadata containing the dates put into a `<span>` element of the darakah/obsidian-timelines plugin.
 Not sure why anyone else would have use for this.
 
@@ -25,7 +25,7 @@ In order to also see the content of the span block (i.e. the added lines) you ne
 ```
 to the `obsidian.css` file in the snippets folder. 
 
-## Number References
+## Number References<a name="numb-ref"></a>
 This family of commands helps to keep track of a number and quickly insert, increment and decrement it.  
 You can set the formatting for how the number should be added.  
 ### Usage / Commands
