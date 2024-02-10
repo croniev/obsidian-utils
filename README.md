@@ -1,7 +1,7 @@
 # obsidian-utils
 This is a more or less specifically tailored plugin for functions that I find to be useful in obsidian. There are multiple functionalities:  
-- [ **Parse Dates** ]{#parse-dates}
-- [ **Number References** ]{#numb-ref}
+- [**Parse Dates**](#parse-dates)
+- [**Number References**](#numb-ref)
 
 ## Parse Dates<a name="parse-dates"></a>
 This command helps create inline metadata containing the dates put into a `<span>` element of the darakah/obsidian-timelines plugin.
